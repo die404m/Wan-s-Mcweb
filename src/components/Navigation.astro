@@ -1,0 +1,269 @@
+---
+import { websiteConfig } from '../config/website.config.js';
+---
+
+<nav id="navbar" class="navbar">
+    <div class="navbar-container">
+        <!-- Logo -->
+        <div class="navbar-brand">
+            <a href="/" class="logo-link">
+                <span class="logo-icon">
+                    <i class="mdi mdi-cube"></i>
+                </span>
+                <span class="logo-text">
+                    {websiteConfig.site.title}
+                </span>
+            </a>
+        </div>
+        
+        <!-- 导航菜单 -->
+        <div class="navbar-menu">
+            <ul class="nav-links">
+                {websiteConfig.navigation.items.filter(item => item.enabled).map(item => (
+                    <li class="nav-item">
+                        <a 
+                            href={item.path} 
+                            class={`nav-link ${Astro.url.pathname === item.path ? 'active' : ''}`}
+                        >
+                            <i class={`mdi ${item.icon}`}></i>
+                            <span>{item.name}</span>
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </div>
+        
+        <!-- 右侧功能区 -->
+        <div class="navbar-actions">
+            <!-- 日夜切换按钮 -->
+            <button id="theme-toggle" class="theme-toggle" aria-label="切换主题">
+                <i class="mdi mdi-white-balance-sunny theme-icon-light"></i>
+                <i class="mdi mdi-weather-night theme-icon-dark"></i>
+            </button>
+            
+            <!-- 移动端菜单按钮 -->
+            <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="切换菜单">
+                <i class="mdi mdi-menu"></i>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<script>
+// 导航栏高亮状态管理
+function updateNavHighlight() {
+    const currentPath = window.location.pathname;
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        // 处理相对路径和绝对路径
+        const isActive = currentPath === href || 
+                        (href === '/' && currentPath === '/') ||
+                        (href !== '/' && currentPath.startsWith(href));
+        
+        if (isActive) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+}
+
+// 页面加载时更新高亮
+document.addEventListener('DOMContentLoaded', updateNavHighlight);
+
+// 监听页面导航事件（SPA 导航）
+document.addEventListener('astro:page-load', updateNavHighlight);
+</script>
+
+<style>
+.navbar {
+    position: fixed;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-backdrop);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+    transition: all 0.3s var(--ease-smooth);
+    width: calc(100% - 4rem);
+    max-width: 1200px;
+}
+
+.navbar.hidden {
+    transform: translateX(-50%) translateY(-100%);
+    opacity: 0;
+}
+
+.navbar-container {
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+}
+
+.navbar-brand .logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--color-text);
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.logo-icon {
+    margin-right: 0.5rem;
+    font-size: 2rem;
+    color: var(--color-primary);
+}
+
+.navbar-menu {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 2rem;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    color: var(--color-text);
+    border-radius: var(--radius-full);
+    transition: all 0.3s var(--ease-smooth);
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.nav-link.active {
+    background: var(--color-primary);
+    color: white;
+    box-shadow: var(--shadow-lg);
+}
+
+.nav-link i {
+    margin-right: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.theme-toggle {
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    color: var(--color-text);
+    transition: all 0.3s var(--ease-smooth);
+    position: relative;
+    overflow: hidden;
+}
+
+.theme-toggle:hover {
+    background: var(--glass-bg);
+    transform: scale(1.1);
+}
+
+.theme-icon-light,
+.theme-icon-dark {
+    transition: transform 0.3s var(--ease-smooth);
+    font-size: 1.3rem;
+}
+
+[data-theme="dark"] .theme-icon-light {
+    transform: translateY(-100%);
+}
+
+[data-theme="light"] .theme-icon-dark {
+    transform: translateY(100%);
+}
+
+.mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    color: var(--color-text);
+    font-size: 1.3rem;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        top: 1rem;
+        width: calc(100% - 2rem);
+        border-radius: var(--radius-lg);
+    }
+    
+    .navbar-container {
+        padding: 0 1rem;
+        height: 55px;
+    }
+    
+    .mobile-menu-toggle {
+        display: block;
+    }
+    
+    .navbar-menu {
+        position: absolute;
+        top: 100%;
+        right: 0.5rem;
+        width: 50%;
+        min-width: 200px;
+        max-width: 300px;
+        background: var(--color-card-bg);
+        backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-xl);
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s var(--ease-smooth);
+    }
+    
+    .navbar-menu.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .nav-links {
+        flex-direction: column;
+        padding: 1rem;
+        gap: 0.5rem;
+    }
+    
+    .nav-link {
+        justify-content: center;
+        padding: 1rem;
+    }
+}
+</style>

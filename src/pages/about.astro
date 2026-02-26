@@ -1,0 +1,352 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { websiteConfig } from '../config/website.config.js';
+import PageTitle from '../components/PageTitle.astro';
+import { fetchMembersData, formatMembersList, getPlayerAvatarUrl } from '../utils/members.js';
+
+// 获取成员列表数据
+const membersList = await fetchMembersData();
+const formattedMembers = formatMembersList(membersList);
+
+const title = "关于我们";
+const description = "了解服务器的详细信息和管理团队";
+---
+
+<Layout {title} {description}>
+    <div class="page-container">
+        <!-- 页面头部 -->
+        <PageTitle pageTitle={websiteConfig.navigation.items.find(item => item.path === "/about")?.pageTitle} />
+
+        <!-- 关于内容 -->
+        <main class="page-content">
+            <!-- 服务器信息 -->
+            <section class="server-info-section">
+                <div class="info-grid">
+                    {Object.entries(websiteConfig.about?.sections || {}).map(([key, section]) => {
+                        if (!section.enabled) return null;
+                        
+                        // 获取图标类名，优先使用图标映射，如果没有映射则使用原始值
+                        const iconClass = websiteConfig.icons?.mappings?.[section.icon] 
+                            ? `mdi ${websiteConfig.icons.mappings[section.icon]}`
+                            : `mdi ${section.icon}`;
+                        
+                        return (
+                            <div class="info-card card">
+                                <i class={iconClass}></i>
+                                <h3>{section.title}</h3>
+                                <ul class="info-list">
+                                    {section.items.map(item => (
+                                        <li>
+                                            <strong>{item.label}:</strong> {item.value}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        );
+                    })}
+                </div>
+            </section>
+
+            <!-- 游戏规则 -->
+            {websiteConfig.about?.rules?.enabled && (
+                <section class="rules-section">
+                    <h2 class="section-title">{websiteConfig.about.rules.title}</h2>
+                    <p class="section-description">{websiteConfig.about.rules.description}</p>
+                    <div class="rules-grid">
+                        {websiteConfig.about.rules.items.map((rule, index) => {
+                            // 获取图标类名，优先使用图标映射，如果没有映射则使用原始值
+                            const iconClass = websiteConfig.icons?.mappings?.[rule.icon] 
+                                ? `mdi ${websiteConfig.icons.mappings[rule.icon]}`
+                                : `mdi ${rule.icon}`;
+                            
+                            return (
+                                <div class="rule-card card" key={index}>
+                                    <i class={iconClass}></i>
+                                    <h4>{rule.title}</h4>
+                                    <p>{rule.description}</p>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </section>
+            )}
+
+            <!-- 成员列表 -->
+            {websiteConfig.about?.members?.enabled && formattedMembers.length > 0 && (
+                <section class="members-section">
+                    <h2 class="section-title">{websiteConfig.about.members.title}</h2>
+                    <p class="section-description">{websiteConfig.about.members.description}</p>
+                    <div class="members-grid">
+                        {formattedMembers.map((member, index) => (
+                            <div class="member-card card" key={index}>
+                                <div class="member-avatar">
+                                    <img 
+                                        src={member.avatar} 
+                                        alt={member.name}
+                                        loading="lazy"
+                                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                    />
+                                    <i class="mdi mdi-account fallback-icon" style="display: none;"></i>
+                                </div>
+                                <div class="member-info">
+                                    <h4>{member.name}</h4>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            <!-- 联系方式 -->
+            {websiteConfig.about?.contact?.enabled && (
+                <section class="contact-section">
+                    <h2 class="section-title">{websiteConfig.about.contact.title}</h2>
+                    <p class="section-description">{websiteConfig.about.contact.description}</p>
+                    <div class="contact-grid">
+                        {websiteConfig.about.contact.items.map((contact, index) => {
+                            // 获取图标类名，优先使用图标映射，如果没有映射则使用原始值
+                            const iconClass = websiteConfig.icons?.mappings?.[contact.icon] 
+                                ? `mdi ${websiteConfig.icons.mappings[contact.icon]}`
+                                : `mdi ${contact.icon}`;
+                            
+                            return (
+                                <div class="contact-card card" key={index}>
+                                    <i class={iconClass}></i>
+                                    <h4>{contact.title}</h4>
+                                    <p>{contact.subtitle}</p>
+                                    <button class={`btn btn-${contact.buttonType}`} onclick={`window.open('${contact.url}', '_blank')`}>
+                                        <i class={iconClass}></i>
+                                        {contact.buttonText}
+                                    </button>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </section>
+            )}
+        </main>
+    </div>
+</Layout>
+
+<style>
+.page-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.info-card {
+    text-align: center;
+    transition: transform 0.3s var(--ease-smooth);
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+}
+
+.info-card i {
+    font-size: 3rem;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+}
+
+.info-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--color-text);
+}
+
+.info-list,
+.feature-list {
+    list-style: none;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+}
+
+.info-list li,
+.feature-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--glass-border);
+    color: var(--color-text-light);
+}
+
+.info-list li:last-child,
+.feature-list li:last-child {
+    border-bottom: none;
+}
+
+.feature-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.feature-list .mdi-check {
+    color: var(--color-success);
+}
+
+.team-list {
+    text-align: left;
+}
+
+.team-member {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.team-member:last-child {
+    border-bottom: none;
+}
+
+.member-name {
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.member-role {
+    color: var(--color-text-light);
+    font-size: 0.9rem;
+}
+
+.rules-grid,
+.contact-grid,
+.members-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.rule-card,
+.contact-card {
+    text-align: center;
+    transition: transform 0.3s var(--ease-smooth);
+}
+
+.rule-card:hover,
+.contact-card:hover,
+.member-card:hover {
+    transform: translateY(-5px);
+}
+
+.rule-card i,
+.contact-card i {
+    font-size: 3rem;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+}
+
+.contact-card .btn i {
+    font-size: 1rem !important;
+    margin-bottom: 0;
+    margin-right: 0.5rem;
+}
+
+/* 成员列表样式 */
+.member-card {
+    text-align: center;
+    transition: transform 0.3s var(--ease-smooth);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem;
+}
+
+.member-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 0;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    border: 3px solid var(--color-primary);
+    background: var(--color-card-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.member-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.member-avatar .fallback-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-primary);
+    color: white;
+    font-size: 2rem;
+}
+
+.member-info h4 {
+    font-size: 1.2rem;
+    margin: 0;
+    color: var(--color-text);
+    font-weight: 600;
+}
+
+.rule-card h4,
+.contact-card h4 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+}
+
+.rule-card p,
+.contact-card p {
+    color: var(--color-text-light);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .page-content {
+        gap: 2rem;
+    }
+    
+    .info-grid,
+    .rules-grid,
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .team-member {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}
+</style>

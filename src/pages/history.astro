@@ -1,0 +1,732 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { websiteConfig } from '../config/website.config.js';
+import { getHistoryData, parseFileName } from '../utils/historyApi.js';
+import PageTitle from '../components/PageTitle.astro';
+
+const title = "服务器历程";
+const description = "了解服务器的发展历史和重要事件";
+
+const historyData = await getHistoryData(websiteConfig.history);
+---
+
+<Layout {title} {description}>
+  <div class="history-container">
+    <!-- 页面头部 -->
+    <PageTitle pageTitle={websiteConfig.navigation.items.find(item => item.path === "/history")?.pageTitle} />
+
+    <!-- 时间线内容 -->
+    <main class="history-content">
+      {historyData.length > 0 ? (
+        <div class="timeline">
+          {historyData.map((item, index) => (
+            <div class={`timeline-item ${index % 2 === 0 ? 'left' : 'right'}`}>
+              <!-- 时间轴标记 -->
+              <div class="timeline-marker">
+                <div class="timeline-dot"></div>
+                <div class="timeline-date">{item.date}</div>
+              </div>
+              
+              <!-- 历程内容卡片 -->
+              <div class="timeline-content">
+                <div class="history-card">
+                  <!-- 图片区域 -->
+                  <div class="history-image-container">
+                    <img 
+                      src={item.thumbnailUrl} 
+                      alt={item.title}
+                      class="history-image"
+                      loading="lazy"
+                      data-fullsize={item.imageUrl}
+                    />
+                    <div class="image-overlay">
+                      <button class="view-fullsize-btn" data-image={item.imageUrl}>
+                        <i class="mdi mdi-magnify"></i>
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <!-- 内容区域 -->
+                  <div class="history-content-info">
+                    <h3 class="history-item-title">{item.title}</h3>
+                    <div class="history-authors">
+                      <span class="authors-label">作者：</span>
+                      {item.authors.map((author, i) => (
+                        <span class="author-tag">{author}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div class="no-data">
+          <i class="mdi mdi-history"></i>
+          <p>暂无历程数据</p>
+        </div>
+      )}
+    </main>
+
+    <!-- 大图查看模态框 -->
+    <div id="image-modal" class="image-modal">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <div class="modal-image-container">
+          <button class="nav-btn prev-btn">
+            <i class="mdi mdi-chevron-left"></i>
+          </button>
+          <img id="modal-image" src="" alt="" />
+          <button class="nav-btn next-btn">
+            <i class="mdi mdi-chevron-right"></i>
+          </button>
+        </div>
+        <div class="modal-info">
+          <h3 id="modal-title"></h3>
+          <p id="modal-date"></p>
+          <p id="modal-authors" class="modal-authors"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .history-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    .history-header {
+      text-align: center;
+      padding: 3rem 0 2rem;
+    }
+
+    .history-title {
+      font-size: 3rem;
+      color: var(--color-primary);
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .history-subtitle {
+      font-size: 1.2rem;
+      color: var(--color-text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    /* 时间线样式 */
+    .timeline {
+      position: relative;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 3rem 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(to bottom, var(--color-primary), var(--color-accent));
+      border-radius: var(--radius-full);
+      transform: translateX(-50%);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 4rem;
+      width: 100%;
+    }
+
+    .timeline-marker {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      text-align: center;
+    }
+
+    .timeline-dot {
+      width: 20px;
+      height: 20px;
+      background: var(--color-primary);
+      border: 4px solid var(--color-background);
+      border-radius: 50%;
+      margin: 0 auto 0.5rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .timeline-date {
+      background: var(--color-card);
+      padding: 0.3rem 1rem;
+      border-radius: var(--radius-full);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      white-space: nowrap;
+    }
+
+    .timeline-content {
+      width: calc(50% - 4rem);
+      position: relative;
+    }
+
+    .timeline-item.left .timeline-content {
+      left: 0;
+      text-align: right;
+    }
+
+    .timeline-item.right .timeline-content {
+      left: calc(50% + 4rem);
+      text-align: left;
+    }
+
+    /* 历程卡片样式 */
+    .history-card {
+      background: var(--color-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .history-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .history-image-container {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16/9;
+    }
+
+    .history-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .history-image-container:hover .history-image {
+      transform: scale(1.05);
+    }
+
+    .image-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .history-image-container:hover .image-overlay {
+      opacity: 1;
+    }
+
+    .view-fullsize-btn {
+      background: rgba(255, 255, 255, 0.9);
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--color-primary);
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .view-fullsize-btn:hover {
+      background: var(--color-primary);
+      color: white;
+      transform: scale(1.1);
+    }
+
+    .history-content-info {
+      padding: 1.5rem;
+    }
+
+    .history-item-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--color-text);
+      margin-bottom: 0.5rem;
+    }
+
+    .history-authors {
+      margin-bottom: 1rem;
+    }
+
+    .authors-label {
+      font-size: 0.9rem;
+      color: var(--color-text-secondary);
+    }
+
+    .author-tag {
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+      padding: 0.2rem 0.8rem;
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      margin: 0 0.2rem;
+    }
+
+    .history-description {
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+    }
+
+    /* 移动端样式 */
+    @media (max-width: 768px) {
+      .timeline::before {
+        left: 30px;
+      }
+
+      .timeline-marker {
+        left: 30px;
+      }
+
+      .timeline-content {
+        width: calc(100% - 80px);
+        left: 80px !important;
+        text-align: left !important;
+      }
+
+
+    }
+
+    /* 无数据样式 */
+    .no-data {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--color-text-secondary);
+    }
+
+    .no-data i {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    /* 大图查看模态框 */
+    .image-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(15px);
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .modal-content {
+      position: relative;
+      margin: auto;
+      max-width: 90%;
+      max-height: 90%;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .modal-image-container {
+      position: relative;
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-xl);
+      background: var(--color-background);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content img {
+      width: 100%;
+      height: auto;
+      max-height: 70vh;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* 导航按钮样式 */
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.9);
+      border: 2px solid var(--color-border);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--color-primary);
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+      z-index: 1001;
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-btn:hover {
+      background: var(--color-primary);
+      color: white;
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: var(--shadow-md);
+    }
+
+    .prev-btn {
+      left: 20px;
+    }
+
+    .next-btn {
+      right: 20px;
+    }
+
+    /* 移动端导航按钮样式 */
+    @media (max-width: 768px) {
+      .nav-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+
+      .prev-btn {
+        left: 10px;
+      }
+
+      .next-btn {
+        right: 10px;
+      }
+      
+      /* 移动端模态框优化 */
+      .modal-content {
+        max-width: 95%;
+        max-height: 90%;
+        gap: 0.5rem;
+      }
+      
+      .modal-image-container {
+        max-height: 50vh;
+      }
+      
+      .modal-info {
+        padding: 1rem;
+        max-width: 100%;
+      }
+      
+      .modal-info h3 {
+        font-size: 1.2rem;
+      }
+      
+      .modal-info p {
+        font-size: 0.9rem;
+      }
+      
+      .close-modal {
+        top: 10px;
+        right: 10px;
+        width: 36px;
+        height: 36px;
+        font-size: 20px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .modal-content {
+        max-width: 98%;
+      }
+      
+      .modal-image-container {
+        max-height: 45vh;
+      }
+      
+      .modal-info {
+        padding: 0.75rem;
+      }
+      
+      .modal-info h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .modal-info p {
+        font-size: 0.85rem;
+        margin: 0.5rem 0;
+      }
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: var(--color-text);
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 1001;
+      background: var(--color-card);
+      border: 2px solid var(--color-border);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .close-modal:hover {
+      background: var(--color-primary);
+      color: white;
+      transform: scale(1.1);
+      box-shadow: var(--shadow-md);
+    }
+
+    .modal-info {
+      background: var(--color-card);
+      color: var(--color-text);
+      padding: 1.5rem 2rem;
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 600px;
+      box-sizing: border-box;
+      box-shadow: var(--shadow-md);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--color-border);
+    }
+
+    .modal-info h3 {
+      margin: 0 0 1rem 0;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      border-bottom: 2px solid var(--color-primary);
+      padding-bottom: 0.5rem;
+    }
+
+    .modal-info p {
+      margin: 0.75rem 0;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .modal-date {
+      color: var(--color-primary);
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .modal-authors {
+      color: var(--color-text-secondary);
+      font-size: 0.95rem;
+      background: rgba(var(--color-primary-rgb), 0.1);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      display: inline-block;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.8s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+
+  <script>
+
+    // 大图查看功能
+    function initImageModal() {
+      const modal = document.getElementById('image-modal') as HTMLElement;
+      const modalImg = document.getElementById('modal-image') as HTMLImageElement;
+      const modalTitle = document.getElementById('modal-title') as HTMLElement;
+      const modalDate = document.getElementById('modal-date') as HTMLElement;
+      const modalAuthors = document.getElementById('modal-authors') as HTMLElement;
+      const closeBtn = document.querySelector('.close-modal') as HTMLElement;
+      const prevBtn = document.querySelector('.prev-btn') as HTMLElement;
+      const nextBtn = document.querySelector('.next-btn') as HTMLElement;
+      
+      // 存储所有图片数据
+      let currentIndex = 0;
+      let imageData = [];
+      
+      // 收集所有图片数据
+      function collectImageData() {
+        imageData = [];
+        document.querySelectorAll('.view-fullsize-btn').forEach((btn, index) => {
+          const imageUrl = btn.getAttribute('data-image');
+          const card = btn.closest('.history-card');
+          const timelineItem = card?.closest('.timeline-item');
+          
+          const titleElement = card?.querySelector('.history-item-title');
+          const dateElement = timelineItem?.querySelector('.timeline-date');
+          const authorsElement = card?.querySelector('.history-authors');
+          
+          const title = titleElement?.textContent || '未知标题';
+          const date = dateElement?.textContent || '未知日期';
+          
+          let authors = '未知作者';
+          if (authorsElement) {
+            const authorTags = authorsElement.querySelectorAll('.author-tag');
+            if (authorTags.length > 0) {
+              authors = Array.from(authorTags).map(tag => tag.textContent).join(', ');
+            } else {
+              authors = authorsElement.textContent.replace('作者：', '').trim();
+            }
+          }
+          
+          imageData.push({
+            index: index,
+            imageUrl: imageUrl,
+            title: title,
+            date: date,
+            authors: authors
+          });
+        });
+      }
+      
+      // 显示指定索引的图片
+      function showImage(index: number) {
+        if (index < 0 || index >= imageData.length) return;
+        
+        const data = imageData[index];
+        modalImg.src = data.imageUrl;
+        modalTitle.textContent = data.title;
+        modalDate.textContent = data.date;
+        modalAuthors.textContent = `作者：${data.authors}`;
+        currentIndex = index;
+        
+        // 更新导航按钮状态
+        prevBtn.style.display = index === 0 ? 'none' : 'flex';
+        nextBtn.style.display = index === imageData.length - 1 ? 'none' : 'flex';
+      }
+      
+      // 控制页面滚动
+      function disableScroll() {
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'relative';
+        document.body.style.height = '100vh';
+      }
+      
+      function enableScroll() {
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.height = '';
+      }
+
+      // 点击查看大图按钮
+      document.querySelectorAll('.view-fullsize-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          collectImageData();
+          const imageUrl = this.getAttribute('data-image');
+          
+          // 找到当前点击的图片索引
+          const clickedIndex = imageData.findIndex(data => data.imageUrl === imageUrl);
+          if (clickedIndex !== -1) {
+            showImage(clickedIndex);
+            modal.style.display = 'block';
+            disableScroll();
+          }
+        });
+      });
+
+      // 上一张图片
+      prevBtn.addEventListener('click', () => {
+        if (currentIndex > 0) {
+          showImage(currentIndex - 1);
+        }
+      });
+
+      // 下一张图片
+      nextBtn.addEventListener('click', () => {
+        if (currentIndex < imageData.length - 1) {
+          showImage(currentIndex + 1);
+        }
+      });
+
+      // 键盘导航
+      document.addEventListener('keydown', (e) => {
+        if (modal.style.display === 'block') {
+          if (e.key === 'ArrowLeft' && currentIndex > 0) {
+            showImage(currentIndex - 1);
+          } else if (e.key === 'ArrowRight' && currentIndex < imageData.length - 1) {
+            showImage(currentIndex + 1);
+          } else if (e.key === 'Escape') {
+            modal.style.display = 'none';
+            enableScroll();
+          }
+        }
+      });
+
+      // 关闭模态框
+      closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+        enableScroll();
+      });
+
+      // 点击模态框背景关闭
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+          enableScroll();
+        }
+      });
+    }
+
+    // 图片懒加载
+    function initLazyLoading() {
+      const images = document.querySelectorAll('.history-image[loading="lazy"]') as NodeListOf<HTMLImageElement>;
+      
+      const imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target as HTMLImageElement;
+            const originalSrc = img.getAttribute('src');
+            
+            // 直接加载原图，避免CORS问题
+            if (originalSrc) {
+              img.src = originalSrc;
+            }
+            
+            imageObserver.unobserve(img);
+          }
+        });
+      });
+
+      images.forEach(img => imageObserver.observe(img));
+    }
+
+    // 初始化
+    document.addEventListener('DOMContentLoaded', () => {
+      initImageModal();
+      initLazyLoading();
+    });
+  </script>
+</Layout>

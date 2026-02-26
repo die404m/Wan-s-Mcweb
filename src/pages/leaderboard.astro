@@ -1,0 +1,634 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { websiteConfig } from '../config/website.config.js';
+import PageTitle from '../components/PageTitle.astro';
+import { fetchLeaderboardData, getAvailableObjectives, getPlayerScores, formatScore, formatUpdateTime } from '../utils/leaderboard.js';
+
+const title = "排行榜";
+const description = "查看服务器玩家的排行榜信息";
+
+// 获取排行榜数据
+const leaderboardData = await fetchLeaderboardData();
+const availableObjectives = getAvailableObjectives(leaderboardData);
+
+// 如果没有可用的计分板，显示默认的第一个
+const defaultObjective = availableObjectives[0] || null;
+
+// 获取更新时间
+const updateTime = formatUpdateTime(leaderboardData.export_time);
+---
+
+<Layout {title} {description}>
+    <div class="page-container">
+        <!-- 页面头部 -->
+        <PageTitle pageTitle={websiteConfig.navigation.items.find(item => item.path === "/leaderboard")?.pageTitle} />
+
+        <!-- 排行榜内容 -->
+        <main class="page-content">
+            <!-- 更新时间显示 -->
+            {websiteConfig.leaderboard?.display?.showUpdateTime && (
+                <div class="update-time">
+                    <i class="mdi mdi-update"></i>
+                    <span>{updateTime}</span>
+                </div>
+            )}
+
+            <!-- 排行榜筛选 -->
+            {availableObjectives.length > 0 && (
+                <div class="leaderboard-filters card">
+                    <div class="filter-buttons">
+                        {availableObjectives.map((objective, index) => {
+                            // 获取图标类名，优先使用图标映射，如果没有映射则使用原始值
+                            const iconClass = websiteConfig.icons?.mappings?.[objective.icon] 
+                                ? `mdi ${websiteConfig.icons.mappings[objective.icon]}`
+                                : `mdi ${objective.icon}`;
+                            
+                            return (
+                                <button 
+                                    class="filter-btn {index === 0 ? 'active' : ''}" 
+                                    data-filter={objective.key}
+                                    data-objective-key={objective.key}
+                                >
+                                    <i class={iconClass}></i>
+                                    {objective.displayName}
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
+
+            <!-- 排行榜列表 -->
+            <div class="leaderboard-list">
+                {availableObjectives.length > 0 ? (
+                    availableObjectives.map((objective, index) => (
+                        <div 
+                            id={`leaderboard-${objective.key}`} 
+                            class="leaderboard-section {index === 0 ? 'active' : ''}"
+                        >
+                            <!-- 排行榜头部 -->
+                            <div class="leaderboard-header card">
+                                <div class="rank-header">排名</div>
+                                <div class="player-header">玩家</div>
+                                <div class="score-header">{objective.displayName}</div>
+                                {websiteConfig.leaderboard?.display?.showPlayerCount && (
+                                    <div class="count-header">
+                                        <i class="mdi mdi-account-group"></i>
+                                        {objective.data.player_count} 人
+                                    </div>
+                                )}
+                            </div>
+
+                            <!-- 排行榜项目 -->
+                            {(() => {
+                                const scores = getPlayerScores(objective.data, objective.config);
+                                let playerRank = 0;
+                                const playerScores = scores.filter(score => !score.player.includes('总'));
+                                const totalScore = scores.find(score => score.player.includes('总'));
+                                const displayLimit = 10;
+                                const hasMore = playerScores.length > displayLimit;
+                                const displayScores = playerScores.slice(0, displayLimit);
+                                
+                                return (
+                                    <>
+                                        {/* 总计行 */}
+                                        {totalScore && (
+                                            <div class="leaderboard-item card total-score">
+                                                <div class="rank">
+                                                    <span class="rank-total">总计</span>
+                                                </div>
+                                                <div class="player-info">
+                                                    <div class="player-avatar">
+                                                        <i class="mdi mdi-chart-bar"></i>
+                                                    </div>
+                                                    <div class="player-details">
+                                                        <h4>{totalScore.player}</h4>
+                                                    </div>
+                                                </div>
+                                                <div class="score">
+                                                    <span class="score-value">
+                                                        {formatScore(totalScore.score, objective.unit)}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        )}
+                                        
+                                        {/* 玩家数据行 */}
+                                        {displayScores.map((score) => {
+                                            const actualRank = ++playerRank;
+                                            return (
+                                                <div class="leaderboard-item card" data-player-rank={actualRank}>
+                                                    <div class="rank">
+                                                        <span class="rank-number">{actualRank}</span>
+                                                    </div>
+                                                    <div class="player-info">
+                                                        <div class="player-avatar">
+                                                            <img 
+                                                                src={`https://crafthead.net/avatar/${encodeURIComponent(score.player)}`} 
+                                                                alt={score.player}
+                                                                loading="lazy"
+                                                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                                            />
+                                                            <i class="mdi mdi-account fallback-icon" style="display: none;"></i>
+                                                        </div>
+                                                        <div class="player-details">
+                                                            <h4>{score.player}</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="score">
+                                                        <span class="score-value">
+                                                            {formatScore(score.score, objective.unit)}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                        
+                                        {/* 查看更多按钮 */}
+                                        {hasMore && (
+                                            <div class="show-more-container">
+                                                <button class="show-more-btn" data-objective-key={objective.key}>
+                                                    <i class="mdi mdi-chevron-down"></i>
+                                                    查看更多 ({playerScores.length - displayLimit} 位玩家)
+                                                </button>
+                                            </div>
+                                        )}
+                                        
+                                        {/* 隐藏的剩余数据 */}
+                                        {hasMore && (
+                                            <div class="hidden-scores" style="display: none;">
+                                                <div class="show-less-container">
+                                                    <button class="show-less-btn" data-objective-key={objective.key}>
+                                                        <i class="mdi mdi-chevron-up"></i>
+                                                        收起
+                                                    </button>
+                                                </div>
+                                                {playerScores.slice(displayLimit).map((score) => {
+                                                    const actualRank = ++playerRank;
+                                                    return (
+                                                        <div class="leaderboard-item card" data-player-rank={actualRank}>
+                                                            <div class="rank">
+                                                                <span class="rank-number">{actualRank}</span>
+                                                            </div>
+                                                            <div class="player-info">
+                                                                <div class="player-avatar">
+                                                                    <img 
+                                                                        src={`https://crafthead.net/avatar/${encodeURIComponent(score.player)}`} 
+                                                                        alt={score.player}
+                                                                        loading="lazy"
+                                                                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                                                    />
+                                                                    <i class="mdi mdi-account fallback-icon" style="display: none;"></i>
+                                                                </div>
+                                                                <div class="player-details">
+                                                                    <h4>{score.player}</h4>
+                                                                </div>
+                                                            </div>
+                                                            <div class="score">
+                                                                <span class="score-value">
+                                                                    {formatScore(score.score, objective.unit)}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        )}
+                                    </>
+                                );
+                            })()}
+                        </div>
+                    ))
+                ) : (
+                    <!-- 无数据时显示 -->
+                    <div class="no-data card">
+                        <i class="mdi mdi-trophy-outline"></i>
+                        <h3>暂无排行榜数据</h3>
+                        <p>请稍后再试或检查服务器连接</p>
+                    </div>
+                )}
+            </div>
+        </main>
+    </div>
+
+    <script is:inline>
+        // 切换排行榜显示
+        function switchLeaderboard(objectiveKey) {
+            // 隐藏所有排行榜
+            document.querySelectorAll('.leaderboard-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // 显示选中的排行榜
+            const targetSection = document.getElementById(`leaderboard-${objectiveKey}`);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+            
+            // 更新按钮状态
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-filter="${objectiveKey}"]`).classList.add('active');
+        }
+        
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 默认显示第一个排行榜
+            const firstSection = document.querySelector('.leaderboard-section');
+            const firstFilter = document.querySelector('.filter-btn');
+            
+            if (firstSection && firstFilter) {
+                // 隐藏所有排行榜
+                document.querySelectorAll('.leaderboard-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // 隐藏所有按钮的活跃状态
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // 显示第一个排行榜和按钮
+                firstSection.classList.add('active');
+                firstFilter.classList.add('active');
+            }
+            
+            // 添加按钮点击事件
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const objectiveKey = this.getAttribute('data-objective-key');
+                    switchLeaderboard(objectiveKey);
+                });
+            });
+            
+            // 添加查看更多按钮点击事件
+            document.querySelectorAll('.show-more-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const objectiveKey = this.getAttribute('data-objective-key');
+                    const activeSection = document.querySelector('.leaderboard-section.active');
+                    const hiddenScores = activeSection.querySelector('.hidden-scores');
+                    const showMoreBtn = this;
+                    
+                    if (hiddenScores && hiddenScores.style.display === 'none') {
+                        // 展开
+                        hiddenScores.style.display = 'block';
+                        showMoreBtn.style.display = 'none';
+                    }
+                });
+            });
+            
+            // 添加收起按钮点击事件
+            document.querySelectorAll('.show-less-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const objectiveKey = this.getAttribute('data-objective-key');
+                    const activeSection = document.querySelector('.leaderboard-section.active');
+                    const hiddenScores = activeSection.querySelector('.hidden-scores');
+                    const showMoreBtn = activeSection.querySelector('.show-more-btn');
+                    
+                    // 收起
+                    if (hiddenScores) {
+                        hiddenScores.style.display = 'none';
+                    }
+                    if (showMoreBtn) {
+                        showMoreBtn.style.display = 'flex';
+                    }
+                });
+            });
+        });
+    </script>
+
+    <style>
+        .update-time {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .leaderboard-section {
+            display: none;
+        }
+
+        .leaderboard-section.active {
+            display: block;
+        }
+
+        /* 排行榜筛选按钮样式 - 导航栏同款 */
+        .leaderboard-filters {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-backdrop);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: var(--radius-full);
+            color: var(--color-text);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-smooth);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .filter-btn.active {
+            background: var(--color-primary);
+            color: white;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .filter-btn .mdi {
+            font-size: 1.1rem;
+            transition: transform 0.3s var(--ease-smooth);
+        }
+
+        .leaderboard-header {
+            display: grid;
+            grid-template-columns: 80px 1fr auto;
+            gap: 1rem;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-backdrop);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .leaderboard-header .count-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--color-text-light);
+        }
+
+        .leaderboard-item {
+            display: grid;
+            grid-template-columns: 80px 1fr auto;
+            gap: 1rem;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s var(--ease-smooth);
+            background: var(--color-card-bg);
+            backdrop-filter: var(--glass-backdrop);
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .leaderboard-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .leaderboard-item.total-score {
+            background: linear-gradient(135deg, rgba(255, 142, 183, 0.2), rgba(166, 227, 233, 0.2));
+            border-left: 4px solid var(--color-primary);
+        }
+
+        .rank {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .rank-number {
+            font-size: 1.2rem;
+            color: var(--color-primary);
+        }
+
+        .rank-total {
+            font-size: 0.9rem;
+            color: var(--color-text-light);
+            background: var(--color-primary);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+        }
+
+        .mdi-crown {
+            color: gold;
+        }
+
+        .mdi-medal:first-of-type {
+            color: silver;
+        }
+
+        .mdi-medal:last-of-type {
+            color: #cd7f32;
+        }
+
+        .player-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .player-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--color-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .player-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .player-avatar .fallback-icon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .player-details h4 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--color-text);
+        }
+
+        .player-details span {
+            font-size: 0.8rem;
+            color: var(--color-text-light);
+        }
+
+        .score {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .score-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        .player-count {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-light);
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .no-data .mdi {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* 查看更多按钮样式 */
+        .show-more-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            padding: 1rem;
+        }
+
+        .show-more-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--color-text);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-smooth);
+            border-radius: var(--radius-full);
+        }
+
+        .show-more-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .hidden-scores {
+            transition: all 0.3s var(--ease-smooth);
+            width: 100%;
+        }
+
+        .hidden-scores .leaderboard-item {
+            display: grid;
+            grid-template-columns: 80px 1fr auto;
+            gap: 1rem;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s var(--ease-smooth);
+            background: var(--color-card-bg);
+            backdrop-filter: var(--glass-backdrop);
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow-sm);
+            width: 100%;
+        }
+
+        .hidden-scores .leaderboard-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* 收起按钮样式 */
+        .show-less-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+        }
+
+        .show-less-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--color-text);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-smooth);
+            border-radius: var(--radius-full);
+        }
+
+        .show-less-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        @media (max-width: 768px) {
+            .leaderboard-header,
+            .leaderboard-item {
+                grid-template-columns: 60px 1fr auto;
+                gap: 0.5rem;
+                padding: 0.75rem;
+            }
+
+            .player-info {
+                gap: 0.5rem;
+            }
+
+            .player-avatar {
+                width: 32px;
+                height: 32px;
+            }
+
+            .player-details h4 {
+                font-size: 1rem;
+            }
+
+            .score-value {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</Layout>

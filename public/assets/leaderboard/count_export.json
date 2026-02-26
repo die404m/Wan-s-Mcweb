@@ -1,0 +1,1358 @@
+{
+  "export_time": "2026-02-26 10:01:02",
+  "source_file": "scoreboard.dat",
+  "local_copy": "cache/scoreboard_copy.dat",
+  "total_objectives": 9,
+  "objectives": {
+    "fzsd.module.scoreboard.display.activation": {
+      "display_slot": "sidebar.team.aqua",
+      "player_count": 32,
+      "player_scores": [
+        {
+          "player": "总活跃时间",
+          "score": 2570
+        },
+        {
+          "player": "EpiphanyEX",
+          "score": 911
+        },
+        {
+          "player": "Bu_XiAo_Le",
+          "score": 639
+        },
+        {
+          "player": "ckdg",
+          "score": 227
+        },
+        {
+          "player": "lvtuzhi",
+          "score": 151
+        },
+        {
+          "player": "wanwan_jiean",
+          "score": 109
+        },
+        {
+          "player": "Elumila",
+          "score": 100
+        },
+        {
+          "player": "lanbaicai01",
+          "score": 71
+        },
+        {
+          "player": "DYHdyx",
+          "score": 65
+        },
+        {
+          "player": "02_Asuka_02",
+          "score": 61
+        },
+        {
+          "player": "XiaoHongya",
+          "score": 54
+        },
+        {
+          "player": "xxxx1s",
+          "score": 53
+        },
+        {
+          "player": "LLHHH",
+          "score": 18
+        },
+        {
+          "player": "wucan",
+          "score": 18
+        },
+        {
+          "player": "mc_anya101",
+          "score": 11
+        },
+        {
+          "player": "CrazyPastor",
+          "score": 10
+        },
+        {
+          "player": "Noirinsou",
+          "score": 8
+        },
+        {
+          "player": "_YUTONG_",
+          "score": 8
+        },
+        {
+          "player": "Dnbiz0i",
+          "score": 8
+        },
+        {
+          "player": "moutaz",
+          "score": 8
+        },
+        {
+          "player": "kongbai1145",
+          "score": 7
+        },
+        {
+          "player": "renji01",
+          "score": 7
+        },
+        {
+          "player": "gugu904521",
+          "score": 6
+        },
+        {
+          "player": "hiko",
+          "score": 4
+        },
+        {
+          "player": "zwkooodoge",
+          "score": 3
+        },
+        {
+          "player": "BIG_windows",
+          "score": 3
+        },
+        {
+          "player": "ranmei",
+          "score": 3
+        },
+        {
+          "player": "xia_shake1145",
+          "score": 2
+        },
+        {
+          "player": "Guliyu",
+          "score": 2
+        },
+        {
+          "player": "RedAPXL",
+          "score": 1
+        },
+        {
+          "player": "wanwanjiean",
+          "score": 1
+        },
+        {
+          "player": "bu_zhang",
+          "score": 1
+        }
+      ],
+      "statistics": {
+        "total_players": 32,
+        "total_score": 5140,
+        "average_score": 160.62,
+        "top_player": "总活跃时间",
+        "top_score": 2570
+      },
+      "objective_info": {
+        "RenderType": "integer",
+        "Name": "fzsd.module.scoreboard.display.activation",
+        "CriteriaName": "dummy",
+        "display_auto_update": 0,
+        "DisplayName": "{\"text\":\"活跃时间（h）\",\"color\":\"aqua\"}"
+      }
+    },
+    "fzsd.module.scoreboard.display.aviating_distance": {
+      "display_slot": "sidebar.team.light_purple",
+      "player_count": 28,
+      "player_scores": [
+        {
+          "player": "总飞行距离",
+          "score": 6880812
+        },
+        {
+          "player": "EpiphanyEX",
+          "score": 2287726
+        },
+        {
+          "player": "Bu_XiAo_Le",
+          "score": 1826574
+        },
+        {
+          "player": "ckdg",
+          "score": 675986
+        },
+        {
+          "player": "lvtuzhi",
+          "score": 581525
+        },
+        {
+          "player": "DYHdyx",
+          "score": 244205
+        },
+        {
+          "player": "Elumila",
+          "score": 221155
+        },
+        {
+          "player": "lanbaicai01",
+          "score": 213119
+        },
+        {
+          "player": "XiaoHongya",
+          "score": 197544
+        },
+        {
+          "player": "xxxx1s",
+          "score": 182792
+        },
+        {
+          "player": "wanwan_jiean",
+          "score": 128998
+        },
+        {
+          "player": "02_Asuka_02",
+          "score": 120676
+        },
+        {
+          "player": "LLHHH",
+          "score": 50192
+        },
+        {
+          "player": "CrazyPastor",
+          "score": 38303
+        },
+        {
+          "player": "_YUTONG_",
+          "score": 37440
+        },
+        {
+          "player": "renji01",
+          "score": 24961
+        },
+        {
+          "player": "gugu904521",
+          "score": 13400
+        },
+        {
+          "player": "mc_anya101",
+          "score": 10242
+        },
+        {
+          "player": "BIG_windows",
+          "score": 7490
+        },
+        {
+          "player": "Guliyu",
+          "score": 6828
+        },
+        {
+          "player": "xia_shake1145",
+          "score": 4968
+        },
+        {
+          "player": "shanbian0v0",
+          "score": 2520
+        },
+        {
+          "player": "Ricardo111111111",
+          "score": 2083
+        },
+        {
+          "player": "moutaz",
+          "score": 1213
+        },
+        {
+          "player": "Bai_Ye1121",
+          "score": 495
+        },
+        {
+          "player": "ranmei",
+          "score": 314
+        },
+        {
+          "player": "yy5832",
+          "score": 59
+        },
+        {
+          "player": "RedAPXL",
+          "score": 4
+        }
+      ],
+      "statistics": {
+        "total_players": 28,
+        "total_score": 13761624,
+        "average_score": 491486.57,
+        "top_player": "总飞行距离",
+        "top_score": 6880812
+      },
+      "objective_info": {
+        "RenderType": "integer",
+        "Name": "fzsd.module.scoreboard.display.aviating_distance",
+        "CriteriaName": "dummy",
+        "display_auto_update": 0,
+        "DisplayName": "{\"text\":\"飞行距离\",\"color\":\"light_purple\"}"
+      }
+    },
+    "fzsd.module.scoreboard.display.damage_taken": {
+      "display_slot": "sidebar.team.yellow",
+      "player_count": 44,
+      "player_scores": [
+        {
+          "player": "总受伤害数",
+          "score": 133886
+        },
+        {
+          "player": "EpiphanyEX",
+          "score": 61742
+        },
+        {
+          "player": "Bu_XiAo_Le",
+          "score": 24024
+        },
+        {
+          "player": "ckdg",
+          "score": 6420
+        },
+        {
+          "player": "lvtuzhi",
+          "score": 4566
+        },
+        {
+          "player": "lanbaicai01",
+          "score": 4446
+        },
+        {
+          "player": "Elumila",
+          "score": 3898
+        },
+        {
+          "player": "02_Asuka_02",
+          "score": 3240
+        },
+        {
+          "player": "XiaoHongya",
+          "score": 2758
+        },
+        {
+          "player": "DYHdyx",
+          "score": 2522
+        },
+        {
+          "player": "wanwan_jiean",
+          "score": 2381
+        },
+        {
+          "player": "wucan",
+          "score": 2372
+        },
+        {
+          "player": "xxxx1s",
+          "score": 1986
+        },
+        {
+          "player": "CrazyPastor",
+          "score": 1659
+        },
+        {
+          "player": "LLHHH",
+          "score": 1477
+        },
+        {
+          "player": "mc_anya101",
+          "score": 1154
+        },
+        {
+          "player": "hiko",
+          "score": 1125
+        },
+        {
+          "player": "moutaz",
+          "score": 1089
+        },
+        {
+          "player": "_YUTONG_",
+          "score": 1054
+        },
+        {
+          "player": "renji01",
+          "score": 873
+        },
+        {
+          "player": "xia_shake1145",
+          "score": 742
+        },
+        {
+          "player": "Dnbiz0i",
+          "score": 702
+        },
+        {
+          "player": "zwkooodoge",
+          "score": 676
+        },
+        {
+          "player": "Noirinsou",
+          "score": 588
+        },
+        {
+          "player": "kongbai1145",
+          "score": 336
+        },
+        {
+          "player": "gugu904521",
+          "score": 301
+        },
+        {
+          "player": "RedAPXL",
+          "score": 278
+        },
+        {
+          "player": "ranmei",
+          "score": 244
+        },
+        {
+          "player": "yy5832",
+          "score": 220
+        },
+        {
+          "player": "bu_zhang",
+          "score": 216
+        },
+        {
+          "player": "wanwanjiean",
+          "score": 135
+        },
+        {
+          "player": "CoinRabbit45751",
+          "score": 114
+        },
+        {
+          "player": "shanbian0v0",
+          "score": 104
+        },
+        {
+          "player": "Guliyu",
+          "score": 100
+        },
+        {
+          "player": "Bai_Ye1121",
+          "score": 78
+        },
+        {
+          "player": "BIG_windows",
+          "score": 77
+        },
+        {
+          "player": "wuxuanlingyue",
+          "score": 46
+        },
+        {
+          "player": "Elysiawa",
+          "score": 43
+        },
+        {
+          "player": "Ricardo111111111",
+          "score": 37
+        },
+        {
+          "player": "HeCunQiu",
+          "score": 24
+        },
+        {
+          "player": "HJM233",
+          "score": 22
+        },
+        {
+          "player": "Vege_Egg",
+          "score": 11
+        },
+        {
+          "player": "Minecraft_ZXG",
+          "score": 5
+        },
+        {
+          "player": "LiYi_zz",
+          "score": 1
+        }
+      ],
+      "statistics": {
+        "total_players": 44,
+        "total_score": 267772,
+        "average_score": 6085.73,
+        "top_player": "总受伤害数",
+        "top_score": 133886
+      },
+      "objective_info": {
+        "RenderType": "integer",
+        "Name": "fzsd.module.scoreboard.display.damage_taken",
+        "CriteriaName": "dummy",
+        "display_auto_update": 0,
+        "DisplayName": "{\"text\":\"抖M榜\",\"color\":\"yellow\"}"
+      }
+    },
+    "fzsd.module.scoreboard.display.death_count": {
+      "display_slot": "sidebar.team.dark_red",
+      "player_count": 35,
+      "player_scores": [
+        {
+          "player": "总死亡数",
+          "score": 377
+        },
+        {
+          "player": "wucan",
+          "score": 60
+        },
+        {
+          "player": "hiko",
+          "score": 34
+        },
+        {
+          "player": "moutaz",
+          "score": 34
+        },
+        {
+          "player": "EpiphanyEX",
+          "score": 31
+        },
+        {
+          "player": "xia_shake1145",
+          "score": 22
+        },
+        {
+          "player": "XiaoHongya",
+          "score": 19
+        },
+        {
+          "player": "mc_anya101",
+          "score": 15
+        },
+        {
+          "player": "wanwan_jiean",
+          "score": 15
+        },
+        {
+          "player": "Dnbiz0i",
+          "score": 15
+        },
+        {
+          "player": "Bu_XiAo_Le",
+          "score": 13
+        },
+        {
+          "player": "Noirinsou",
+          "score": 12
+        },
+        {
+          "player": "renji01",
+          "score": 12
+        },
+        {
+          "player": "LLHHH",
+          "score": 9
+        },
+        {
+          "player": "DYHdyx",
+          "score": 9
+        },
+        {
+          "player": "RedAPXL",
+          "score": 9
+        },
+        {
+          "player": "zwkooodoge",
+          "score": 9
+        },
+        {
+          "player": "lanbaicai01",
+          "score": 9
+        },
+        {
+          "player": "_YUTONG_",
+          "score": 7
+        },
+        {
+          "player": "yy5832",
+          "score": 6
+        },
+        {
+          "player": "bu_zhang",
+          "score": 6
+        },
+        {
+          "player": "CrazyPastor",
+          "score": 6
+        },
+        {
+          "player": "CoinRabbit45751",
+          "score": 4
+        },
+        {
+          "player": "Elumila",
+          "score": 3
+        },
+        {
+          "player": "wanwanjiean",
+          "score": 3
+        },
+        {
+          "player": "ranmei",
+          "score": 3
+        },
+        {
+          "player": "xxxx1s",
+          "score": 2
+        },
+        {
+          "player": "ckdg",
+          "score": 2
+        },
+        {
+          "player": "Bai_Ye1121",
+          "score": 2
+        },
+        {
+          "player": "gugu904521",
+          "score": 1
+        },
+        {
+          "player": "Elysiawa",
+          "score": 1
+        },
+        {
+          "player": "HeCunQiu",
+          "score": 1
+        },
+        {
+          "player": "kongbai1145",
+          "score": 1
+        },
+        {
+          "player": "wuxuanlingyue",
+          "score": 1
+        },
+        {
+          "player": "Ricardo111111111",
+          "score": 1
+        }
+      ],
+      "statistics": {
+        "total_players": 35,
+        "total_score": 754,
+        "average_score": 21.54,
+        "top_player": "总死亡数",
+        "top_score": 377
+      },
+      "objective_info": {
+        "RenderType": "integer",
+        "Name": "fzsd.module.scoreboard.display.death_count",
+        "CriteriaName": "dummy",
+        "display_auto_update": 0,
+        "DisplayName": "{\"text\":\"死亡榜\",\"color\":\"dark_red\"}"
+      }
+    },
+    "fzsd.module.scoreboard.display.dig_count": {
+      "display_slot": "sidebar.team.gray",
+      "player_count": 38,
+      "player_scores": [
+        {
+          "player": "总挖掘数",
+          "score": 2458479
+        },
+        {
+          "player": "ckdg",
+          "score": 986664
+        },
+        {
+          "player": "EpiphanyEX",
+          "score": 434766
+        },
+        {
+          "player": "Elumila",
+          "score": 367013
+        },
+        {
+          "player": "Bu_XiAo_Le",
+          "score": 300851
+        },
+        {
+          "player": "02_Asuka_02",
+          "score": 89463
+        },
+        {
+          "player": "lvtuzhi",
+          "score": 54732
+        },
+        {
+          "player": "DYHdyx",
+          "score": 44989
+        },
+        {
+          "player": "renji01",
+          "score": 33164
+        },
+        {
+          "player": "kongbai1145",
+          "score": 21740
+        },
+        {
+          "player": "XiaoHongya",
+          "score": 21358
+        },
+        {
+          "player": "lanbaicai01",
+          "score": 20588
+        },
+        {
+          "player": "xxxx1s",
+          "score": 16584
+        },
+        {
+          "player": "wanwan_jiean",
+          "score": 13222
+        },
+        {
+          "player": "_YUTONG_",
+          "score": 10933
+        },
+        {
+          "player": "mc_anya101",
+          "score": 7935
+        },
+        {
+          "player": "Dnbiz0i",
+          "score": 7344
+        },
+        {
+          "player": "wucan",
+          "score": 5529
+        },
+        {
+          "player": "LLHHH",
+          "score": 5415
+        },
+        {
+          "player": "Noirinsou",
+          "score": 4110
+        },
+        {
+          "player": "BIG_windows",
+          "score": 2210
+        },
+        {
+          "player": "zwkooodoge",
+          "score": 2136
+        },
+        {
+          "player": "CrazyPastor",
+          "score": 1624
+        },
+        {
+          "player": "hiko",
+          "score": 1505
+        },
+        {
+          "player": "xia_shake1145",
+          "score": 1501
+        },
+        {
+          "player": "gugu904521",
+          "score": 1257
+        },
+        {
+          "player": "moutaz",
+          "score": 937
+        },
+        {
+          "player": "Elysiawa",
+          "score": 254
+        },
+        {
+          "player": "bu_zhang",
+          "score": 163
+        },
+        {
+          "player": "HJM233",
+          "score": 140
+        },
+        {
+          "player": "Guliyu",
+          "score": 103
+        },
+        {
+          "player": "wuxuanlingyue",
+          "score": 97
+        },
+        {
+          "player": "CoinRabbit45751",
+          "score": 71
+        },
+        {
+          "player": "Ricardo111111111",
+          "score": 34
+        },
+        {
+          "player": "wanwanjiean",
+          "score": 26
+        },
+        {
+          "player": "ranmei",
+          "score": 10
+        },
+        {
+          "player": "Minecraft_ZXG",
+          "score": 9
+        },
+        {
+          "player": "RedAPXL",
+          "score": 2
+        }
+      ],
+      "statistics": {
+        "total_players": 38,
+        "total_score": 4916958,
+        "average_score": 129393.63,
+        "top_player": "总挖掘数",
+        "top_score": 2458479
+      },
+      "objective_info": {
+        "RenderType": "integer",
+        "Name": "fzsd.module.scoreboard.display.dig_count",
+        "CriteriaName": "dummy",
+        "display_auto_update": 0,
+        "DisplayName": "{\"text\":\"挖掘榜\",\"color\":\"gray\"}"
+      }
+    },
+    "fzsd.module.scoreboard.display.fishing_count": {
+      "display_slot": "sidebar.team.blue",
+      "player_count": 7,
+      "player_scores": [
+        {
+          "player": "总钓鱼数",
+          "score": 40
+        },
+        {
+          "player": "xxxx1s",
+          "score": 17
+        },
+        {
+          "player": "Noirinsou",
+          "score": 9
+        },
+        {
+          "player": "lvtuzhi",
+          "score": 5
+        },
+        {
+          "player": "LLHHH",
+          "score": 4
+        },
+        {
+          "player": "Bu_XiAo_Le",
+          "score": 4
+        },
+        {
+          "player": "wanwan_jiean",
+          "score": 1
+        }
+      ],
+      "statistics": {
+        "total_players": 7,
+        "total_score": 80,
+        "average_score": 11.43,
+        "top_player": "总钓鱼数",
+        "top_score": 40
+      },
+      "objective_info": {
+        "RenderType": "integer",
+        "Name": "fzsd.module.scoreboard.display.fishing_count",
+        "CriteriaName": "dummy",
+        "display_auto_update": 0,
+        "DisplayName": "{\"text\":\"钓鱼榜\",\"color\":\"blue\"}"
+      }
+    },
+    "fzsd.module.scoreboard.display.kill_count": {
+      "display_slot": "sidebar.team.red",
+      "player_count": 37,
+      "player_scores": [
+        {
+          "player": "总击杀数",
+          "score": 1900300
+        },
+        {
+          "player": "Bu_XiAo_Le",
+          "score": 1506764
+        },
+        {
+          "player": "02_Asuka_02",
+          "score": 315102
+        },
+        {
+          "player": "Elumila",
+          "score": 11633
+        },
+        {
+          "player": "XiaoHongya",
+          "score": 11392
+        },
+        {
+          "player": "wanwan_jiean",
+          "score": 10284
+        },
+        {
+          "player": "CrazyPastor",
+          "score": 10280
+        },
+        {
+          "player": "EpiphanyEX",
+          "score": 8767
+        },
+        {
+          "player": "ckdg",
+          "score": 5706
+        },
+        {
+          "player": "lvtuzhi",
+          "score": 4597
+        },
+        {
+          "player": "lanbaicai01",
+          "score": 3382
+        },
+        {
+          "player": "DYHdyx",
+          "score": 3335
+        },
+        {
+          "player": "xxxx1s",
+          "score": 1956
+        },
+        {
+          "player": "renji01",
+          "score": 1515
+        },
+        {
+          "player": "gugu904521",
+          "score": 1410
+        },
+        {
+          "player": "shanbian0v0",
+          "score": 829
+        },
+        {
+          "player": "LLHHH",
+          "score": 773
+        },
+        {
+          "player": "BIG_windows",
+          "score": 757
+        },
+        {
+          "player": "mc_anya101",
+          "score": 613
+        },
+        {
+          "player": "_YUTONG_",
+          "score": 345
+        },
+        {
+          "player": "Guliyu",
+          "score": 300
+        },
+        {
+          "player": "hiko",
+          "score": 107
+        },
+        {
+          "player": "zwkooodoge",
+          "score": 106
+        },
+        {
+          "player": "wucan",
+          "score": 100
+        },
+        {
+          "player": "moutaz",
+          "score": 47
+        },
+        {
+          "player": "kongbai1145",
+          "score": 45
+        },
+        {
+          "player": "Dnbiz0i",
+          "score": 45
+        },
+        {
+          "player": "Noirinsou",
+          "score": 25
+        },
+        {
+          "player": "xia_shake1145",
+          "score": 25
+        },
+        {
+          "player": "bu_zhang",
+          "score": 22
+        },
+        {
+          "player": "wanwanjiean",
+          "score": 9
+        },
+        {
+          "player": "HJM233",
+          "score": 8
+        },
+        {
+          "player": "wuxuanlingyue",
+          "score": 8
+        },
+        {
+          "player": "RedAPXL",
+          "score": 5
+        },
+        {
+          "player": "Elysiawa",
+          "score": 5
+        },
+        {
+          "player": "ranmei",
+          "score": 2
+        },
+        {
+          "player": "Minecraft_ZXG",
+          "score": 1
+        }
+      ],
+      "statistics": {
+        "total_players": 37,
+        "total_score": 3800600,
+        "average_score": 102718.92,
+        "top_player": "总击杀数",
+        "top_score": 1900300
+      },
+      "objective_info": {
+        "RenderType": "integer",
+        "Name": "fzsd.module.scoreboard.display.kill_count",
+        "CriteriaName": "dummy",
+        "display_auto_update": 0,
+        "DisplayName": "{\"text\":\"击杀榜\",\"color\":\"red\"}"
+      }
+    },
+    "fzsd.module.scoreboard.display.placement_count": {
+      "display_slot": "sidebar.team.dark_blue",
+      "player_count": 42,
+      "player_scores": [
+        {
+          "player": "总建造数",
+          "score": 4118320
+        },
+        {
+          "player": "EpiphanyEX",
+          "score": 1419370
+        },
+        {
+          "player": "Bu_XiAo_Le",
+          "score": 1325975
+        },
+        {
+          "player": "ckdg",
+          "score": 677933
+        },
+        {
+          "player": "lvtuzhi",
+          "score": 166592
+        },
+        {
+          "player": "Elumila",
+          "score": 125484
+        },
+        {
+          "player": "xxxx1s",
+          "score": 124298
+        },
+        {
+          "player": "lanbaicai01",
+          "score": 102598
+        },
+        {
+          "player": "wanwan_jiean",
+          "score": 61101
+        },
+        {
+          "player": "02_Asuka_02",
+          "score": 43972
+        },
+        {
+          "player": "XiaoHongya",
+          "score": 16574
+        },
+        {
+          "player": "DYHdyx",
+          "score": 15350
+        },
+        {
+          "player": "mc_anya101",
+          "score": 6783
+        },
+        {
+          "player": "Dnbiz0i",
+          "score": 6614
+        },
+        {
+          "player": "wucan",
+          "score": 6212
+        },
+        {
+          "player": "LLHHH",
+          "score": 5794
+        },
+        {
+          "player": "Noirinsou",
+          "score": 3607
+        },
+        {
+          "player": "kongbai1145",
+          "score": 3147
+        },
+        {
+          "player": "zwkooodoge",
+          "score": 1260
+        },
+        {
+          "player": "CrazyPastor",
+          "score": 1026
+        },
+        {
+          "player": "renji01",
+          "score": 997
+        },
+        {
+          "player": "xia_shake1145",
+          "score": 725
+        },
+        {
+          "player": "moutaz",
+          "score": 478
+        },
+        {
+          "player": "_YUTONG_",
+          "score": 474
+        },
+        {
+          "player": "bu_zhang",
+          "score": 418
+        },
+        {
+          "player": "BIG_windows",
+          "score": 386
+        },
+        {
+          "player": "hiko",
+          "score": 345
+        },
+        {
+          "player": "gugu904521",
+          "score": 325
+        },
+        {
+          "player": "Guliyu",
+          "score": 164
+        },
+        {
+          "player": "CoinRabbit45751",
+          "score": 87
+        },
+        {
+          "player": "HJM233",
+          "score": 61
+        },
+        {
+          "player": "Ricardo111111111",
+          "score": 34
+        },
+        {
+          "player": "RedAPXL",
+          "score": 32
+        },
+        {
+          "player": "wuxuanlingyue",
+          "score": 26
+        },
+        {
+          "player": "Bai_Ye1121",
+          "score": 20
+        },
+        {
+          "player": "Minecraft_ZXG",
+          "score": 15
+        },
+        {
+          "player": "ranmei",
+          "score": 11
+        },
+        {
+          "player": "yy5832",
+          "score": 10
+        },
+        {
+          "player": "wanwanjiean",
+          "score": 10
+        },
+        {
+          "player": "Elysiawa",
+          "score": 8
+        },
+        {
+          "player": "shanbian0v0",
+          "score": 3
+        },
+        {
+          "player": "HeCunQiu",
+          "score": 1
+        }
+      ],
+      "statistics": {
+        "total_players": 42,
+        "total_score": 8236640,
+        "average_score": 196110.48,
+        "top_player": "总建造数",
+        "top_score": 4118320
+      },
+      "objective_info": {
+        "RenderType": "integer",
+        "Name": "fzsd.module.scoreboard.display.placement_count",
+        "CriteriaName": "dummy",
+        "display_auto_update": 0,
+        "DisplayName": "{\"text\":\"建造榜\",\"color\":\"dark_blue\"}"
+      }
+    },
+    "fzsd.module.scoreboard.display.trade_count": {
+      "display_slot": "sidebar.team.dark_green",
+      "player_count": 26,
+      "player_scores": [
+        {
+          "player": "总交易数",
+          "score": 42353
+        },
+        {
+          "player": "EpiphanyEX",
+          "score": 6617
+        },
+        {
+          "player": "xxxx1s",
+          "score": 6034
+        },
+        {
+          "player": "XiaoHongya",
+          "score": 5075
+        },
+        {
+          "player": "lanbaicai01",
+          "score": 4430
+        },
+        {
+          "player": "Elumila",
+          "score": 4146
+        },
+        {
+          "player": "DYHdyx",
+          "score": 2861
+        },
+        {
+          "player": "Bu_XiAo_Le",
+          "score": 2775
+        },
+        {
+          "player": "LLHHH",
+          "score": 1880
+        },
+        {
+          "player": "mc_anya101",
+          "score": 1856
+        },
+        {
+          "player": "renji01",
+          "score": 1521
+        },
+        {
+          "player": "lvtuzhi",
+          "score": 1182
+        },
+        {
+          "player": "ckdg",
+          "score": 692
+        },
+        {
+          "player": "CrazyPastor",
+          "score": 579
+        },
+        {
+          "player": "wanwan_jiean",
+          "score": 521
+        },
+        {
+          "player": "zwkooodoge",
+          "score": 506
+        },
+        {
+          "player": "BIG_windows",
+          "score": 479
+        },
+        {
+          "player": "gugu904521",
+          "score": 421
+        },
+        {
+          "player": "ranmei",
+          "score": 339
+        },
+        {
+          "player": "02_Asuka_02",
+          "score": 158
+        },
+        {
+          "player": "RedAPXL",
+          "score": 113
+        },
+        {
+          "player": "_YUTONG_",
+          "score": 96
+        },
+        {
+          "player": "Noirinsou",
+          "score": 31
+        },
+        {
+          "player": "moutaz",
+          "score": 24
+        },
+        {
+          "player": "shanbian0v0",
+          "score": 14
+        },
+        {
+          "player": "xia_shake1145",
+          "score": 3
+        }
+      ],
+      "statistics": {
+        "total_players": 26,
+        "total_score": 84706,
+        "average_score": 3257.92,
+        "top_player": "总交易数",
+        "top_score": 42353
+      },
+      "objective_info": {
+        "RenderType": "integer",
+        "Name": "fzsd.module.scoreboard.display.trade_count",
+        "CriteriaName": "dummy",
+        "display_auto_update": 0,
+        "DisplayName": "{\"text\":\"交易榜\",\"color\":\"dark_green\"}"
+      }
+    }
+  },
+  "overall_statistics": {
+    "total_players_across_objectives": 289,
+    "objectives_found": [
+      "fzsd.module.scoreboard.display.activation",
+      "fzsd.module.scoreboard.display.aviating_distance",
+      "fzsd.module.scoreboard.display.damage_taken",
+      "fzsd.module.scoreboard.display.death_count",
+      "fzsd.module.scoreboard.display.dig_count",
+      "fzsd.module.scoreboard.display.fishing_count",
+      "fzsd.module.scoreboard.display.kill_count",
+      "fzsd.module.scoreboard.display.placement_count",
+      "fzsd.module.scoreboard.display.trade_count"
+    ]
+  }
+}

@@ -1,0 +1,201 @@
+---
+// 页面标题组件
+// 支持打字机效果和多语言切换
+
+interface Props {
+  pageTitle: {
+    mainTitle: {
+      texts: string[];
+      typewriter: {
+        enabled: boolean;
+        speed: number;
+        delay: number;
+        loop: boolean;
+      };
+    };
+    subtitle: string;
+  };
+  className?: string;
+}
+
+const { pageTitle, className = "" } = Astro.props;
+
+// 生成唯一的ID用于打字机效果
+const typewriterId = `typewriter-${Math.random().toString(36).substr(2, 9)}`;
+
+// 防御性检查：如果pageTitle不存在，使用默认值
+const safePageTitle = pageTitle || {
+  mainTitle: {
+    texts: ["页面标题"],
+    typewriter: {
+      enabled: false,
+      speed: 100,
+      delay: 1000,
+      loop: true
+    }
+  },
+  subtitle: "页面描述"
+};
+---
+
+<!-- 页面标题容器 -->
+<header class={`page-header fade-in ${className}`}>
+  <!-- 主标题区域 -->
+  <h1 class="page-title">
+    {safePageTitle.mainTitle.typewriter.enabled ? (
+      <!-- 打字机效果版本 -->
+      <span 
+        id={typewriterId}
+        class="typewriter-text"
+        data-typewriter-id="true"
+        data-texts={JSON.stringify(safePageTitle.mainTitle.texts)}
+        data-speed={safePageTitle.mainTitle.typewriter.speed}
+        data-delay={safePageTitle.mainTitle.typewriter.delay}
+        data-loop={safePageTitle.mainTitle.typewriter.loop}
+      >
+        {safePageTitle.mainTitle.texts[0]}
+      </span>
+    ) : (
+      <!-- 普通版本 -->
+      <span>{safePageTitle.mainTitle.texts[0]}</span>
+    )}
+  </h1>
+  
+  <!-- 副标题 -->
+  <p class="page-subtitle">{safePageTitle.subtitle}</p>
+</header>
+
+<!-- 打字机效果脚本 -->
+{safePageTitle.mainTitle.typewriter.enabled && (
+  <script is:inline>
+    // 打字机效果实现
+    (function() {
+      // 使用数据属性查找元素
+      const typewriterElements = document.querySelectorAll('[data-typewriter-id]');
+      
+      typewriterElements.forEach(element => {
+        const texts = JSON.parse(element.dataset.texts);
+        const speed = parseInt(element.dataset.speed);
+        const delay = parseInt(element.dataset.delay);
+        const loop = element.dataset.loop === 'true';
+        
+        let currentTextIndex = 0;
+        let currentCharIndex = 0;
+        let isDeleting = false;
+        
+        function type() {
+          const currentText = texts[currentTextIndex];
+          
+          if (isDeleting) {
+            // 删除模式
+            element.textContent = currentText.substring(0, currentCharIndex - 1);
+            currentCharIndex--;
+
+            if (currentCharIndex === 0) {
+              isDeleting = false;
+              
+              // 切换到下一个文本（循环处理）
+              currentTextIndex = (currentTextIndex + 1) % texts.length;
+              
+              // 延迟后开始打字下一个文本
+              setTimeout(() => {
+                type();
+              }, delay);
+            } else {
+              // 继续删除
+              setTimeout(type, speed / 2);
+            }
+          } else {
+            // 打字模式
+            element.textContent = currentText.substring(0, currentCharIndex + 1);
+            currentCharIndex++;
+            
+            if (currentCharIndex === currentText.length) {
+              // 完整显示文本后，准备开始删除
+              setTimeout(() => {
+                isDeleting = true;
+                                
+                // 总是继续打字机效果（如果loop为false，会在删除最后一个文本后停止）
+                setTimeout(type, 500);
+              }, delay);
+            } else {
+              // 继续打字
+              setTimeout(type, speed);
+
+            }
+          }
+        }
+        
+        // 延迟启动打字机效果，让页面先加载
+        setTimeout(type, 1000);
+      });
+    })();
+  </script>
+)}
+
+<style>
+  .page-header {
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+    padding: 2rem 0;
+  }
+
+  .page-title {
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1.5rem;
+    min-height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .typewriter-text {
+    border-right: 3px solid var(--color-primary);
+    padding-right: 5px;
+    animation: blink-caret 1s step-end infinite;
+  }
+
+  @keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: var(--color-primary); }
+  }
+
+  .page-subtitle {
+    font-size: 1.2rem;
+    color: var(--color-primary);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+    font-weight: 500;
+  }
+
+  /* 响应式设计 */
+  @media (max-width: 768px) {
+    .page-title {
+      font-size: 2.5rem;
+      min-height: 3.5rem;
+    }
+    
+    .page-subtitle {
+      font-size: 1.1rem;
+      padding: 0 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .page-title {
+      font-size: 2rem;
+      min-height: 3rem;
+    }
+    
+    .page-subtitle {
+      font-size: 1rem;
+    }
+  }
+</style>

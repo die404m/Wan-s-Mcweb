@@ -1,0 +1,120 @@
+---
+---
+
+<!-- 一键到顶按钮 -->
+<button 
+    id="back-to-top" 
+    class="back-to-top" 
+    aria-label="回到顶部"
+    style="display: none;"
+>
+    <i class="mdi mdi-chevron-up"></i>
+</button>
+
+<script>
+// 一键到顶功能
+document.addEventListener('DOMContentLoaded', () => {
+    const backToTopBtn = document.getElementById('back-to-top');
+    
+    // 滚动检测
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (scrollTop > 300) {
+            // 显示按钮
+            backToTopBtn.style.display = 'flex';
+            setTimeout(() => {
+                backToTopBtn.classList.add('visible');
+            }, 10);
+        } else {
+            // 隐藏按钮
+            backToTopBtn.classList.remove('visible');
+            setTimeout(() => {
+                if (!backToTopBtn.classList.contains('visible')) {
+                    backToTopBtn.style.display = 'none';
+                }
+            }, 300);
+        }
+    });
+    
+    // 点击回到顶部
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+});
+</script>
+
+<style>
+.back-to-top {
+    position: fixed;
+    bottom: 8rem; /* 位于音乐播放器上方，保持垂直间距 */
+    right: 2rem; /* 与音乐播放器水平对齐 */
+    width: 60px;
+    height: 60px;
+    background: var(--color-primary);
+    border: none;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 9998;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.3s var(--ease-smooth);
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+    color: white;
+    font-size: 1.5rem;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.back-to-top:hover {
+    background: var(--color-accent);
+    transform: scale(1.1);
+    box-shadow: var(--shadow-xl);
+}
+
+.back-to-top:active {
+    transform: scale(0.95);
+}
+
+.back-to-top i {
+    font-size: 1.5rem;
+    color: white;
+    transition: all 0.3s var(--ease-smooth);
+}
+
+/* 响应式设计 - 与音乐播放器保持一致 */
+@media (max-width: 768px) {
+    .back-to-top {
+        bottom: 7rem;
+        right: 1.5rem;
+        width: 55px;
+        height: 55px;
+    }
+    
+    .back-to-top i {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .back-to-top {
+        bottom: 6rem;
+        right: 1rem;
+        width: 50px;
+        height: 50px;
+    }
+    
+    .back-to-top i {
+        font-size: 1.3rem;
+    }
+}
+</style>

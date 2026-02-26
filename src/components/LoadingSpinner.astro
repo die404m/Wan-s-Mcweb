@@ -1,0 +1,256 @@
+---
+// 加载动画组件 - Minecraft 主题
+---
+
+<div id="loading-spinner" class="loading-spinner" style="display: none;">
+  <div class="spinner-container">
+    <!-- Minecraft 主题加载动画 -->
+    <div class="minecraft-animation">
+      <!-- 黑曜石方块 -->
+      <div class="obsidian-block">
+        <img 
+          src="/assets/load/Obsidian.png" 
+          alt="黑曜石" 
+          class="obsidian"
+        />
+        <div class="mining-effect"></div>
+      </div>
+      
+      <!-- 钻石镐 -->
+      <div class="pickaxe-container">
+        <img 
+          src="/assets/load/Diamond_Pickaxe.png" 
+          alt="钻石镐" 
+          class="diamond-pickaxe"
+        />
+      </div>
+    </div>
+    
+    <!-- 加载文字 -->
+    <div class="loading-text">
+      <span class="loading-dots">
+        <span class="dot">.</span>
+        <span class="dot">.</span>
+        <span class="dot">.</span>
+      </span>
+    </div>
+    
+    <!-- 进度条 -->
+    <div class="progress-bar">
+      <div class="progress-fill"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+.loading-spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-smooth);
+}
+
+.loading-spinner.show {
+  opacity: 1;
+}
+
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 3rem;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glass-shadow);
+  min-width: 200px;
+}
+
+.minecraft-animation {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.obsidian-block {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  z-index: 1;
+}
+
+.obsidian {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  animation: block-pulse 2s var(--ease-smooth) infinite;
+}
+
+.pickaxe-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  width: 48px;
+  height: 48px;
+}
+
+.diamond-pickaxe {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+  animation: mining-swing 1.5s var(--ease-bounce) infinite;
+  transform-origin: center bottom;
+}
+
+.mining-effect {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: var(--color-accent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  animation: mining-spark 1.5s var(--ease-bounce) infinite;
+}
+
+.loading-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  text-align: center;
+}
+
+.loading-dots {
+  display: inline-block;
+}
+
+.loading-dots .dot {
+  opacity: 0;
+  animation: dot-bounce 1.4s infinite;
+}
+
+.loading-dots .dot:nth-child(1) { animation-delay: 0s; }
+.loading-dots .dot:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots .dot:nth-child(3) { animation-delay: 0.4s; }
+
+.progress-bar {
+  width: 120px;
+  height: 4px;
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  border-radius: var(--radius-full);
+  width: 0%;
+  transition: width 0.3s var(--ease-smooth);
+}
+
+@keyframes mining-swing {
+  0%, 100% { 
+    transform: translateX(-50%) rotate(-15deg) translateY(0);
+  }
+  25% { 
+    transform: translateX(-50%) rotate(15deg) translateY(10px);
+  }
+  50% { 
+    transform: translateX(-50%) rotate(0deg) translateY(20px);
+  }
+  75% { 
+    transform: translateX(-50%) rotate(-10deg) translateY(15px);
+  }
+}
+
+@keyframes block-pulse {
+  0%, 100% { 
+    transform: scale(1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  }
+  25% { 
+    transform: scale(0.95);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  }
+  50% { 
+    transform: scale(1.05);
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
+  }
+}
+
+@keyframes mining-spark {
+  0%, 100% { 
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  45% { 
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+  50% { 
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  55% { 
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+}
+
+@keyframes dot-bounce {
+  0%, 80%, 100% { 
+    opacity: 0; 
+    transform: translateY(0); 
+  }
+  40% { 
+    opacity: 1; 
+    transform: translateY(-5px); 
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .spinner-container {
+    padding: 2rem;
+    gap: 1.5rem;
+  }
+  
+  .minecraft-animation {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .obsidian-block {
+    width: 56px;
+    height: 56px;
+  }
+  
+  .pickaxe-container {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .loading-text {
+    font-size: 1rem;
+  }
+}
+</style>
