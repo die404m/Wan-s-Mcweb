@@ -382,4 +382,4 @@ MIT License
 
 如有问题，请通过以下方式联系：
 - 创建 GitHub Issue
-- 发送邮件至 support@example.com
+- 发送邮件至 me@wanfory.top
