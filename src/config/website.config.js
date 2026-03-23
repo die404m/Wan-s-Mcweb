@@ -2,10 +2,10 @@
 export const websiteConfig = {
   // 网站基本信息
   site: {
-    title: "菜狗服",
-    description: "欢迎来到晚晚服，探索无限可能的方块世界！",
+    title: "寰宇方块",
+    description: "欢迎来到寰宇方块，探索无限可能的方块世界！",
     keywords: "Minecraft,服务器,我的世界,Java版,生存,创造,生电",
-    author: "晚晚服",
+    author: "寰宇方块",
     language: "zh-CN"
   },
 
@@ -24,7 +24,7 @@ export const websiteConfig = {
         pageTitle: {
           // 主标题配置（支持打字机效果）
           mainTitle: {
-            texts: ["欢迎来到 晚晚服", "Welcome to DuskCraft"], // 多语言标题数组
+            texts: ["欢迎来到 寰宇方块", "Welcome to DuskCraft"], // 多语言标题数组
             typewriter: {
               enabled: true, // 是否启用打字机效果
               speed: 100,    // 打字速度（毫秒）
@@ -67,7 +67,7 @@ export const websiteConfig = {
         externalUrl: "", // 外链地址（仅在external为true时生效）
         pageTitle: {
           mainTitle: {
-            texts: ["晚晚服服历程", "DCS History"],
+            texts: ["寰宇方块历程", "DCS History"],
             typewriter: {
               enabled: true,
               speed: 100,
