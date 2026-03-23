@@ -2,7 +2,7 @@
 export const websiteConfig = {
   // 网站基本信息
   site: {
-    title: "晚晚服",
+    title: "菜狗服",
     description: "欢迎来到晚晚服，探索无限可能的方块世界！",
     keywords: "Minecraft,服务器,我的世界,Java版,生存,创造,生电",
     author: "晚晚服",
